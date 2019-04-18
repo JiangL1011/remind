@@ -7,9 +7,9 @@ $(function () {
         const ins1 = layui.laydate.render({
             elem: '#calendar',
             position: 'static',
-            mark: {
+            /*mark: {
                 '2019-4-18': ''
-            },
+            },*/
             change: function (value, date) {
 
             },

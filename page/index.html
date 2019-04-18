@@ -7,14 +7,22 @@
     <link rel="stylesheet" href="../static/css/index.css">
 </head>
 <body>
-
-<div id="calendar"></div>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-md3">
+            <div id="calendar"></div>
+        </div>
+        <div class="layui-col-md9">
+            你的内容 3/12
+        </div>
+    </div>
+</div>
 <script>
-    require('../renderer/base-require.js');
+    require('../renderer/util/base-require.js');
     const electron = require('electron');
 </script>
 <script src="../node_modules/layui-src/dist/layui.all.js"></script>
-<script src="../renderer/index.js"></script>
-<script src="../renderer/communicate.js"></script>
+<script src="../renderer/calendar.js"></script>
+<script src="../renderer/util/communicate.js"></script>
 </body>
 </html>
