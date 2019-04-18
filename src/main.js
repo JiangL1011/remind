@@ -2,12 +2,16 @@
 const {app, BrowserWindow, Menu, Tray} = require('electron');
 const electron = require('electron');
 const fs = require('fs');
+const nedb = require('nedb');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-
 let tray;
+const db = new nedb({
+    filename: 'data/remind.db',
+    autoload: true
+});
 
 function createWindow() {
     // Create the browser window.
@@ -57,8 +61,4 @@ app.on('activate', function () {
     if (mainWindow === null) createWindow()
 });
 
-electron.ipcMain.on('readJson', function (event, args) {
-    fs.readFile(args, 'utf8', function (err, data) {
-        event.sender.send('readJson', data);
-    })
-});
+

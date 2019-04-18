@@ -22,6 +22,7 @@
   "dependencies": {
     "jquery": "^3.4.0",
     "layui-laydate": "^5.0.9",
-    "layui-src": "^2.4.5"
+    "layui-src": "^2.4.5",
+    "nedb": "^1.8.0"
   }
 }
