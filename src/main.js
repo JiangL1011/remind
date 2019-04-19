@@ -2,13 +2,14 @@
 const {app, BrowserWindow, Menu, Tray} = require('electron');
 const electron = require('electron');
 const fs = require('fs');
-const nedb = require('nedb');
+const Nedb = require('nedb');
+const env = require('../config/environment');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let tray;
-const db = new nedb({
+const db = new Nedb({
     filename: 'data/remind.db',
     autoload: true
 });
@@ -27,34 +28,53 @@ function createWindow() {
     mainWindow.loadFile('page/index.html');
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
-        mainWindow = null
+        mainWindow = null;
+    });
+
+    // 获取窗口关闭事件
+    mainWindow.on('close', function (e) {
+        if (!app.isQuiting) {
+            e.preventDefault();
+            mainWindow.hide();
+            tray.displayBalloon({
+                title: '贼鸡儿好用的软件',
+                content: '程序已最小化到系统托盘！',
+                icon: env + 'static/img/lufi.jpg'
+            });
+            return false;
+        }
     });
 
     // 设置系统托盘
-    tray = new Tray("static/img/lufi.ico");
+    tray = new Tray(env + "static/img/lufi.ico");
     const contextMenu = Menu.buildFromTemplate([
-        {label: '退出程序', type: 'normal', click: () => app.quit()}
+        {label: '打开窗口', type: 'normal', click: () => mainWindow.show()},
+        {
+            label: '退出程序', type: 'normal', click: () => {
+                app.isQuiting = true;
+                app.quit();
+            }
+        }
     ]);
     tray.setToolTip('贼鸡儿好用的软件');
     tray.setContextMenu(contextMenu);
+    tray.on('double-click', function () {
+        mainWindow.show();
+    });
+
 }
 
 app.on('ready', createWindow);
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
-    /*if (process.platform !== 'darwin') {
+    if (process.platform !== 'darwin') {
         app.quit();
-    }*/
-    tray.displayBalloon({
-        title: '贼鸡儿好用的软件',
-        content: '程序已最小化到系统托盘！',
-        icon: 'static/img/lufi.jpg'
-    });
+    }
 });
 
 app.on('activate', function () {

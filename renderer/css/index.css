@@ -1,0 +1,33 @@
+/*
+    author:  JiangL
+    date:    2019年04月18日
+*/
+
+body {
+    padding: 10px 0;
+    overflow: hidden;
+}
+
+#calendar {
+    display: flex;
+    justify-content: center;
+}
+
+#remind-list {
+
+}
+
+.layui-btn {
+    background-color: #1E9FFF;
+}
+
+#mid-btn-group {
+    margin-left: 50px;
+    padding-bottom: 15px;
+}
+
+#slide-priority {
+    margin-top: 16px;
+    margin-left: 7px;
+    width: 280px;
+}
