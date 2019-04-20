@@ -4,7 +4,8 @@
   "description": "A minimal Electron application",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package": "electron-packager . 贼鸡儿好用的软件 --win --out myApp --arch=x64 --app-version 1.0 --overwrite --asar"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
