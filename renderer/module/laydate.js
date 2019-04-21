@@ -50,6 +50,18 @@ $(function () {
             }
         });
 
+        // 时间线内容展示范围，默认展示未来十天之内的任务
+        layui.laydate.render({
+            elem: '#timeline-range',
+            range: '至',
+            format: 'yyyy年MM月dd日',
+            value: window.moment().format('YYYY年MM月DD日') + ' 至 ' +
+                window.moment().add(10, 'days').format('YYYY年MM月DD日'),
+            done: function (value, start, end) {
+
+            }
+        });
+
     });
 
 });

@@ -16,4 +16,11 @@ const receive = function (channel, listener) {
     }
 };
 
-module.exports = receive;
+const send = function (channel, data) {
+    electron.ipcRenderer.send(channel, data);
+};
+
+module.exports = {
+    receive: receive,
+    send: send
+};

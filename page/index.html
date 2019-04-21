@@ -13,9 +13,9 @@
             <div id="calendar"></div>
             <div id="remind-list"></div>
         </div>
-        <div class="layui-col-md5">
+        <div class="layui-col-md9">
             <div id="mid-btn-group" class="layui-btn-group">
-                <button class="layui-btn layui-btn-sm">
+                <button class="layui-btn layui-btn-sm" id="new-remind-btn">
                     <i class="layui-icon">&#xe654;</i>
                 </button>
                 <button class="layui-btn layui-btn-sm">
@@ -25,107 +25,142 @@
                     <i class="layui-icon">&#xe640;</i>
                 </button>
             </div>
-            <div id="new-remind">
-                <form class="layui-form" action="">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">标题</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
-                                   autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">提醒方式</label>
-                        <div class="layui-input-block">
-                            <input type="radio" name="type" value="once" title="单次提醒" lay-filter="type" checked>
-                            <input type="radio" name="type" value="repeat" title="重复提醒" lay-filter="type">
-                        </div>
-                    </div>
-                    <div class="layui-form-item" id="deadlineForm">
-                        <label class="layui-form-label">截止时间</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="deadline" id="deadline" lay-verify="required|datetime"
-                                   placeholder="yyyy-MM-dd HH:mm:ss"
-                                   autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                    <div id="repeatTimeForm">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">提醒频率</label>
-                            <div class="layui-input-block">
-                                <input type="radio" name="interval" value="everyDay" title="每天" lay-filter="interval"
-                                       checked>
-                                <input type="radio" name="interval" value="everyWeek" title="每周" lay-filter="interval">
-                                <input type="radio" name="interval" value="everyMonth" title="每月" lay-filter="interval">
+            <div id="timeline-selector-container">
+                <label class="layui-form-label">选择时间段</label>
+                <div class="layui-input-inline">
+                    <input id="timeline-range" class="layui-input" type="text"/>
+                </div>
+            </div>
+            <div id="timeline-container">
+                <ul class="layui-timeline">
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h2 class="layui-timeline-title">8月18日</h2>
+                            <div class="layui-collapse">
+                                <div class="layui-colla-item">
+                                    <h3 class="layui-colla-title">杜甫</h3>
+                                    <div class="layui-colla-content layui-show">内容区域</div>
+                                </div>
+                                <div class="layui-colla-item">
+                                    <h3 class="layui-colla-title">李清照</h3>
+                                    <div class="layui-colla-content layui-show">内容区域</div>
+                                </div>
+                                <div class="layui-colla-item">
+                                    <h3 class="layui-colla-title">鲁迅</h3>
+                                    <div class="layui-colla-content layui-show">内容区域</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">提醒时间</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="repeatTime" id="repeatTime" lay-verify="required|time"
-                                       placeholder="HH:mm:ss"
-                                       autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item" id="week">
-                            <label class="layui-form-label"></label>
-                            <div class="layui-input-block">
-                                <input type="checkbox" name="week[0]" title="周日">
-                                <input type="checkbox" name="week[1]" title="周一">
-                                <input type="checkbox" name="week[2]" title="周二">
-                                <input type="checkbox" name="week[3]" title="周三">
-                                <input type="checkbox" name="week[4]" title="周四">
-                                <input type="checkbox" name="week[5]" title="周五">
-                                <input type="checkbox" name="week[6]" title="周六">
-                            </div>
-                        </div>
-                        <div class="layui-form-item" id="month">
-                            <label class="layui-form-label"></label>
-                            <div class="layui-input-inline">
-                                <select name="dayOfMonth" id="daySelector">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">设置优先级</label>
-                        <div class="layui-input-inline">
-                            <select name="priority">
-                                <option value="1">很低</option>
-                                <option value="2" selected>不着急</option>
-                                <option value="3">有点急</option>
-                                <option value="4">很急了</option>
-                                <option value="5">贼鸡儿着急</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">详细内容</label>
-                        <div class="layui-input-block">
-                            <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="newRemind">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                        </div>
-                    </div>
-                </form>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class="layui-col-md4"></div>
     </div>
 </div>
+
+<!--新增提醒的表单-->
+<div id="new-remind-form" hidden>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提醒方式</label>
+            <div class="layui-input-block">
+                <input id="once" type="radio" name="type" value="once" title="单次提醒" lay-filter="type" checked>
+                <input id="repeat" type="radio" name="type" value="repeat" title="重复提醒" lay-filter="type">
+            </div>
+        </div>
+        <div class="layui-form-item" id="deadlineForm">
+            <label class="layui-form-label">截止时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="deadline" id="deadline" lay-verify="required|datetime"
+                       placeholder="yyyy-MM-dd HH:mm:ss"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div id="repeatTimeForm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">提醒频率</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="interval" value="everyDay" title="每天" lay-filter="interval"
+                           checked>
+                    <input type="radio" name="interval" value="everyWeek" title="每周" lay-filter="interval">
+                    <input type="radio" name="interval" value="everyMonth" title="每月" lay-filter="interval">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">提醒时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="repeatTime" id="repeatTime" lay-verify="required|time"
+                           placeholder="HH:mm:ss"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item" id="week">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="week[0]" title="周日">
+                    <input type="checkbox" name="week[1]" title="周一">
+                    <input type="checkbox" name="week[2]" title="周二">
+                    <input type="checkbox" name="week[3]" title="周三">
+                    <input type="checkbox" name="week[4]" title="周四">
+                    <input type="checkbox" name="week[5]" title="周五">
+                    <input type="checkbox" name="week[6]" title="周六">
+                </div>
+            </div>
+            <div class="layui-form-item" id="month">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline">
+                    <select name="dayOfMonth" id="daySelector">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设置优先级</label>
+            <div class="layui-input-inline">
+                <select name="priority">
+                    <option value="1">很低</option>
+                    <option value="2" selected>不着急</option>
+                    <option value="3">有点急</option>
+                    <option value="4">很急了</option>
+                    <option value="5">贼鸡儿着急</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">详细内容</label>
+            <div class="layui-input-block">
+                <textarea name="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="newRemind">立即提交</button>
+                <button id="reset" type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <script>
     require('../renderer/util/base-require.js');
     const electron = require('electron');
 </script>
+<script src="../renderer/util/communicate.js"></script>
+
 <script src="../node_modules/layui-src/dist/layui.all.js"></script>
 <script>
-    require('../renderer/module/form');
     require('../renderer/module/laydate');
+    require('../renderer/module/form');
+    require('../renderer/module/layer');
+    require('../renderer/module/timeline');
 </script>
-<script src="../renderer/util/communicate.js"></script>
 </body>
 </html>

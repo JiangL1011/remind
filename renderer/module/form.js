@@ -23,19 +23,24 @@ $(function () {
             const form = data.field;
             // 单次提醒的时间不得早于当前时间
             if (form.type === 'once') {
-                const nowDate = new Date();
-                // 获取当前时间和提交时间，并转成格式为yyyyMMddHHmmss的整数，然后比较大小
-                const nowNumber = parseInt(nowDate.getFullYear() + '' +
-                    ((nowDate.getMonth() + 1) > 9 ? (nowDate.getMonth() + 1) : ('0' + (nowDate.getMonth() + 1))) + '' +
-                    nowDate.getDate() + '' + nowDate.getHours() + '' + nowDate.getMinutes() + '' +
-                    nowDate.getSeconds());
+                // 获取当前时间和提交时间，并转成格式为YYYYMMDDHHmmss的整数，然后比较大小
+                const nowDate = window.moment().format('YYYYMMDDHHmmss');
                 const formDate = parseInt(form.deadline.replace(' ', '').replace(/[-:]/g, ''));
-                if (formDate <= nowNumber) {
+                if (formDate <= nowDate) {
                     layer.alert('截至时间不能早于当前时间！');
                     return false;
                 }
             }
-            console.log(form);
+
+            send('submit-new-remind', form, function (e, d) {
+                if (d) {
+                    layer.alert('新增提醒成功！', function () {
+                        location.reload();
+                    });
+                } else {
+                    layer.alert('新增提醒失败！');
+                }
+            });
             return false;
         });
 
@@ -69,6 +74,13 @@ $(function () {
             } else {
                 repeat.append(month);
                 week.remove();
+            }
+        });
+
+        $('#reset').click(function () {
+            if ($('#deadlineForm').length === 0) {
+                repeat.after(deadline);
+                repeat.remove();
             }
         });
     });

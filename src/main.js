@@ -1,18 +1,12 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, Menu, Tray} = require('electron');
-const electron = require('electron');
-const fs = require('fs');
-const Nedb = require('nedb');
 const env = require('../config/environment');
+require('./database/remind.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let tray;
-const db = new Nedb({
-    filename: 'data/remind.db',
-    autoload: true
-});
 
 function createWindow() {
     // Create the browser window.
