@@ -5,10 +5,10 @@
 
 $(function () {
     const container = $('#timeline-container');
-    container.height(document.documentElement.clientHeight);
+    container.height(document.documentElement.clientHeight - 135);
 
     window.onresize = function () {
-        const height = document.documentElement.clientHeight;
+        const height = document.documentElement.clientHeight - 135;
         container.height(height);
     };
 
@@ -19,6 +19,67 @@ module.exports = {
     load: function (start, end) {
         send('loadTimeline', [start, end], function (even, data) {
             console.log(data);
+            let html = '<ul class="layui-timeline">\n';
+            for (let i = 0; i < data.length; i++) {
+                let record = data[i];
+                const remindDate = record.remindDate;
+                html += '                    <li class="layui-timeline-item">\n';
+                html += '                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>\n';
+                html += '                        <div class="layui-timeline-content layui-text">\n';
+                html += '                            <h2 class="layui-timeline-title">' +
+                    window.moment(remindDate, 'YYYYMMDD').format('YYYY年MM月DD日') + '</h2>\n';
+                html += '                            <div class="layui-collapse">\n';
+                while (true) {
+                    const time = record.repeatTime ? record.repeatTime : (record.deadline.split(' ')[1]);
+                    html += '                                <div class="layui-colla-item">\n';
+                    html += '                                    <h3 class="layui-colla-title">' + record.title + '\t' +
+                        time + '</h3>\n';
+                    html += '                                    <div class="layui-colla-content' +
+                        ' layui-show">' + record.content + '</div>\n';
+                    html += '                                </div>\n';
+                    i++;
+                    if (i >= data.length) {
+                        i--;
+                        break;
+                    }
+                    if (data[i].remindDate !== remindDate) {
+                        i--;
+                        break;
+                    } else {
+                        record = data[i];
+                    }
+                }
+                html += '                            </div>\n';
+                html += '                        </div>\n';
+                html += '                    </li>\n';
+            }
+            html += '                </ul>';
+
+            $('#timeline-container').html(html);
+
+            /*const html1 = '<ul class="layui-timeline">\n' +
+                '                    <li class="layui-timeline-item">\n' +
+                '                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>\n' +
+                '                        <div class="layui-timeline-content layui-text">\n' +
+                '                            <h2 class="layui-timeline-title">8月18日</h2>\n' +
+                '                            <div class="layui-collapse">\n' +
+                '                                <div class="layui-colla-item">\n' +
+                '                                    <h3 class="layui-colla-title">杜甫</h3>\n' +
+                '                                    <div class="layui-colla-content layui-show">内容区域</div>\n' +
+                '                                </div>\n' +
+                '                                <div class="layui-colla-item">\n' +
+                '                                    <h3 class="layui-colla-title">李清照</h3>\n' +
+                '                                    <div class="layui-colla-content layui-show">内容区域</div>\n' +
+                '                                </div>\n' +
+                '                                <div class="layui-colla-item">\n' +
+                '                                    <h3 class="layui-colla-title">鲁迅</h3>\n' +
+                '                                    <div class="layui-colla-content layui-show">内容区域</div>\n' +
+                '                                </div>\n' +
+                '                            </div>\n' +
+                '                        </div>\n' +
+                '                    </li>\n' +
+                '                </ul>';
+            $('#timeline-container').html(html1);*/
         });
     }
 };
