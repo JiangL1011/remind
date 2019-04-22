@@ -10,9 +10,15 @@ $(function () {
     window.onresize = function () {
         const height = document.documentElement.clientHeight;
         container.height(height);
-    }
+    };
+
 });
 
-const loadTimeline = function () {
-
+// 输入参数均为YYYYMMDD格式的日期
+module.exports = {
+    load: function (start, end) {
+        send('loadTimeline', [start, end], function (even, data) {
+            console.log(data);
+        });
+    }
 };

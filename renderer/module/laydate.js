@@ -54,11 +54,13 @@ $(function () {
         layui.laydate.render({
             elem: '#timeline-range',
             range: '至',
+            theme: '#1E9FFF',
             format: 'yyyy年MM月dd日',
             value: window.moment().format('YYYY年MM月DD日') + ' 至 ' +
-                window.moment().add(10, 'days').format('YYYY年MM月DD日'),
+                window.moment().add(9, 'days').format('YYYY年MM月DD日'),
             done: function (value, start, end) {
-
+                const date = value.replace(/\D*/g, '');
+                timeline.load(date.substr(0, date.length / 2), date.substr(date.length / 2, date.length - 1))
             }
         });
 
