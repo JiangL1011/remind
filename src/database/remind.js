@@ -66,7 +66,7 @@ communicate.receive('loadTimeline', function (event, data) {
                     return this.nextRemind !== undefined && this.nextRemind.length > 0;
                 } else {
                     let dayOfMonth = parseInt(this.dayOfMonth);
-                    let startMonth = parseInt(Math.floor(start % 10000 / 100));
+                    let startMonth = Math.floor(start % 10000 / 100);
                     while (true) {
                         const dateNum = parseInt(moment().month(startMonth - 1).date(dayOfMonth).format('YYYYMMDD'));
                         if (dateNum < start) {
@@ -84,7 +84,7 @@ communicate.receive('loadTimeline', function (event, data) {
                     return this.nextRemind !== undefined && this.nextRemind.length > 0;
                 }
             } else {
-                const deadline = parseInt(this.deadline.split(' ')[0].replace(/[-]/g, ''));
+                const deadline = parseInt(moment(this.deadline, 'YYYY-MM-DD hh:mm:ss').format('YYYYMMDD'));
                 return deadline >= start && deadline <= end;
             }
         }
