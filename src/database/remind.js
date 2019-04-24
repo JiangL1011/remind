@@ -95,12 +95,12 @@ communicate.receive('loadTimeline', function (event, data) {
             const data = docs[i];
             if (data.deadline) {
                 data.remindDate = parseInt(moment(data.deadline, 'YYYY-MM-DD hh:mm:ss').format('YYYYMMDD'));
-                arr.push({...data});
+                arr.push({ ...data });
             } else {
                 for (let j = 0; j < data.nextRemind.length; j++) {
                     data.remindDate = data.nextRemind[j];
                     delete data._id;
-                    arr.push({...data});
+                    arr.push({ ...data });
                 }
             }
         }
