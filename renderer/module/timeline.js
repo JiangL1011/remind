@@ -57,29 +57,6 @@ module.exports = {
 
             $('#timeline-container').html(html);
 
-            /*const html1 = '<ul class="layui-timeline">\n' +
-                '                    <li class="layui-timeline-item">\n' +
-                '                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>\n' +
-                '                        <div class="layui-timeline-content layui-text">\n' +
-                '                            <h2 class="layui-timeline-title">8月18日</h2>\n' +
-                '                            <div class="layui-collapse">\n' +
-                '                                <div class="layui-colla-item">\n' +
-                '                                    <h3 class="layui-colla-title">杜甫</h3>\n' +
-                '                                    <div class="layui-colla-content layui-show">内容区域</div>\n' +
-                '                                </div>\n' +
-                '                                <div class="layui-colla-item">\n' +
-                '                                    <h3 class="layui-colla-title">李清照</h3>\n' +
-                '                                    <div class="layui-colla-content layui-show">内容区域</div>\n' +
-                '                                </div>\n' +
-                '                                <div class="layui-colla-item">\n' +
-                '                                    <h3 class="layui-colla-title">鲁迅</h3>\n' +
-                '                                    <div class="layui-colla-content layui-show">内容区域</div>\n' +
-                '                                </div>\n' +
-                '                            </div>\n' +
-                '                        </div>\n' +
-                '                    </li>\n' +
-                '                </ul>';
-            $('#timeline-container').html(html1);*/
         });
     }
 };

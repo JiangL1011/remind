@@ -4,6 +4,54 @@
  */
 
 $(function () {
+    const remind = function () {
+        let title, type, deadline, priority, content, interval, repeatTime, dayOfWeek, dayOfMonth;
+        const createTime = window.moment().format('YYYYMMDDHHmmss');
+        return {
+            setTitle(title_) {
+                title = title_;
+            },
+            setType(type_) {
+                type = type_;
+            },
+            setDeadline(deadline_) {
+                deadline = deadline_;
+            },
+            setPriority(priority_) {
+                priority = priority_;
+            },
+            setContent(content_) {
+                content = content_;
+            },
+            setInterval(interval_) {
+                interval = interval_;
+            },
+            setRepeatTime(repeatTime_) {
+                repeatTime = repeatTime_;
+            },
+            setDayOfWeek(dayOfWeek_) {
+                dayOfWeek = dayOfWeek_;
+            },
+            setDayOfMonth(dayOfMonth_) {
+                dayOfMonth = dayOfMonth_
+            },
+            getRemind() {
+                return {
+                    title: title,
+                    type: type,
+                    deadline: deadline,
+                    priority: priority,
+                    content: content,
+                    interval: interval,
+                    repeatTime: repeatTime,
+                    dayOfWeek: dayOfWeek,
+                    dayOfMonth: dayOfMonth,
+                    createTime: createTime
+                }
+            }
+        }
+    };
+
     // 设置提醒方式时对应的表单内容
     const deadline = $('#deadlineForm');
     const repeat = $('#repeatTimeForm');
@@ -31,8 +79,35 @@ $(function () {
                     return false;
                 }
             }
+            // 调整form结构
+            const arr = [];
+            const r = new remind();
+            if (form.deadline) {
+                r.setDeadline(window.moment(form.deadline, 'YYYY-MM-DD HH:mm:ss').format('YYYYMMDDHHmmss'));
+            } else {
+                r.setRepeatTime(window.moment(form.repeatTime, 'HH:mm:ss').format('HHmmss'));
+            }
+            r.setInterval(form.interval);
+            r.setContent(form.content);
+            r.setPriority(form.priority);
+            r.setTitle(form.title);
+            r.setType(form.type);
+            r.setDayOfMonth(form.dayOfMonth);
+            if (form.interval === 'everyWeek') {
+                for (let key in form) {
+                    // noinspection JSUnfilteredForInLoop
+                    if (/^[we{2}k]/.test(key)) {
+                        // noinspection JSUnfilteredForInLoop
+                        r.setDayOfWeek(key.substring(5, 6));
+                        const r_ = r.getRemind();
+                        arr.push({...r_});
+                    }
+                }
+            } else {
+                arr.push(r.getRemind());
+            }
 
-            send('submit-new-remind', form, function (e, d) {
+            send('submit-new-remind', arr, function (e, d) {
                 if (d) {
                     layer.alert('新增提醒成功！', function () {
                         location.reload();
