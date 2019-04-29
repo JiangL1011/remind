@@ -34,30 +34,84 @@ communicate.receive('loadTimeline', function (event, data) {
             if (this.type === 'once') {
                 const deadDate = parseInt(this.deadline.substring(0, 8));
                 if (deadDate >= start && deadDate <= end) {
-                    this.remindTime = this.deadline;
-                    arr.push(this);
+                    this.remindTime = parseInt(this.deadline);
+                    arr.push({...this});
                 }
             } else {
                 if (this.interval === 'everyDay') {
+                    let i = 0;
+                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDhhmmss').format('YYYYMMDD'));
                     while (true) {
-
+                        const d = parseInt(moment(start, 'YYYYMMDD').add(i, 'd').format('YYYYMMDD'));
+                        if (d <= end) {
+                            if (d >= createTime) {
+                                this.remindTime = parseInt(d + '' + this.repeatTime);
+                                arr.push({...this});
+                            }
+                        } else {
+                            break;
+                        }
+                        i++;
                     }
                 } else if (this.interval === 'everyMonth') {
-                    let date = parseInt(moment().date(this.dayOfMonth).format('YYYYMMDD'));
-                    let i = 1;
+                    let i = 0;
+                    const dayOfMonth = parseInt(this.dayOfMonth);
+                    // 从起始日期的所在月份开始遍历
+                    const startMonth = start - start % 100 + dayOfMonth;
+                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDhhmmss').format('YYYYMMDD'));
                     while (true) {
-                        date = parseInt(moment(date, 'YYYYMMDD').add(i, 'M').format('YYYYMMDD'));
-                        i++;
-                        if (date >= start && date <= end) {
-
+                        const d = parseInt(moment(startMonth, 'YYYYMMDD').add(i, 'M').format('YYYYMMDD'));
+                        if (d <= end) {
+                            if (d >= createTime) {
+                                this.remindTime = parseInt(d + '' + this.repeatTime);
+                                arr.push({...this});
+                            }
+                        } else {
+                            break;
                         }
+                        i++;
+                    }
+                } else if (this.interval === 'everyWeek') {
+                    let i = 0;
+                    const dayOfWeek = parseInt(this.dayOfWeek);
+
+                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDhhmmss').format('YYYYMMDD'));
+                    while (true) {
+                        const d = parseInt(moment(start, 'YYYYMMDD').add(i, 'd').format('YYYYMMDD'));
+                        if (d <= end) {
+                            if (d >= createTime) {
+                                this.remindTime = parseInt(d + '' + this.repeatTime);
+                                arr.push({...this});
+                            }
+                        } else {
+                            break;
+                        }
+                        i += 7;
                     }
                 }
             }
+            return false;
         }
     }, function (err, docs) {
+        arr.sort((a, b) => {
+            if (a.remindTime !== b.remindTime) {
+                return a.remindTime < b.remindTime ? -1 : 1;
+            } else {
+                return a.priority <= b.priority ? -1 : 1;
+            }
+        });
 
-        event.sender.send('loadTimeline', arr);
+        // 把所有提醒任务按照提醒时间分类
+        const result = {};
+        for (const d of arr) {
+            const date = moment(d.remindTime, 'YYYYMMDDhhmmss').format('YYYYMMDD');
+            if (!result[date]) {
+                result[date] = [];
+            }
+            result[date].push(d);
+        }
+
+        event.sender.send('loadTimeline', result);
     });
 });
 

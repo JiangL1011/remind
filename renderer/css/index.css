@@ -52,3 +52,7 @@ body {
 #timeline-selector-container > div {
     width: 260px;
 }
+
+.remind-card:hover {
+    background-color: #f3f3f3;
+}
