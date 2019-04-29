@@ -40,11 +40,11 @@ communicate.receive('loadTimeline', function (event, data) {
             } else {
                 if (this.interval === 'everyDay') {
                     let i = 0;
-                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDhhmmss').format('YYYYMMDD'));
+                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDHHmmss').format('YYYYMMDD'));
                     while (true) {
                         const d = parseInt(moment(start, 'YYYYMMDD').add(i, 'd').format('YYYYMMDD'));
                         if (d <= end) {
-                            if (d >= createTime) {
+                            if (d >= createTime && d >= start) {
                                 this.remindTime = parseInt(d + '' + this.repeatTime);
                                 arr.push({...this});
                             }
@@ -58,11 +58,11 @@ communicate.receive('loadTimeline', function (event, data) {
                     const dayOfMonth = parseInt(this.dayOfMonth);
                     // 从起始日期的所在月份开始遍历
                     const startMonth = start - start % 100 + dayOfMonth;
-                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDhhmmss').format('YYYYMMDD'));
+                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDHHmmss').format('YYYYMMDD'));
                     while (true) {
                         const d = parseInt(moment(startMonth, 'YYYYMMDD').add(i, 'M').format('YYYYMMDD'));
                         if (d <= end) {
-                            if (d >= createTime) {
+                            if (d >= createTime && d >= start) {
                                 this.remindTime = parseInt(d + '' + this.repeatTime);
                                 arr.push({...this});
                             }
@@ -72,21 +72,19 @@ communicate.receive('loadTimeline', function (event, data) {
                         i++;
                     }
                 } else if (this.interval === 'everyWeek') {
-                    let i = 0;
-                    const dayOfWeek = parseInt(this.dayOfWeek);
-
-                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDhhmmss').format('YYYYMMDD'));
+                    let dayOfWeek = parseInt(this.dayOfWeek);
+                    const createTime = parseInt(moment(this.createTime, 'YYYYMMDDHHmmss').format('YYYYMMDD'));
                     while (true) {
-                        const d = parseInt(moment(start, 'YYYYMMDD').add(i, 'd').format('YYYYMMDD'));
+                        const d = parseInt(moment().day(dayOfWeek).format('YYYYMMDD'));
                         if (d <= end) {
-                            if (d >= createTime) {
+                            if (d >= createTime && d >= start) {
                                 this.remindTime = parseInt(d + '' + this.repeatTime);
                                 arr.push({...this});
                             }
                         } else {
                             break;
                         }
-                        i += 7;
+                        dayOfWeek += 7;
                     }
                 }
             }
@@ -104,7 +102,7 @@ communicate.receive('loadTimeline', function (event, data) {
         // 把所有提醒任务按照提醒时间分类
         const result = {};
         for (const d of arr) {
-            const date = moment(d.remindTime, 'YYYYMMDDhhmmss').format('YYYYMMDD');
+            const date = moment(d.remindTime, 'YYYYMMDDHHmmss').format('YYYYMMDD');
             if (!result[date]) {
                 result[date] = [];
             }
