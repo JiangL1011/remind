@@ -11,7 +11,8 @@
     <div class="layui-row layui-col-space30">
         <div class="layui-col-md3">
             <div id="calendar"></div>
-            <div id="remind-list"></div>
+            <div id="remind-list">
+            </div>
         </div>
         <div class="layui-col-md9">
             <div id="mid-btn-group" class="layui-btn-group">
@@ -106,10 +107,10 @@
             <div class="layui-input-inline">
                 <select name="priority">
                     <option value="1">很低</option>
-                    <option value="2" selected>不着急</option>
-                    <option value="3">有点急</option>
-                    <option value="4">很急了</option>
-                    <option value="5">贼鸡儿着急</option>
+                    <option value="2" selected>略低</option>
+                    <option value="3">一般</option>
+                    <option value="4">很高</option>
+                    <option value="5">贼鸡儿高</option>
                 </select>
             </div>
         </div>
@@ -133,13 +134,25 @@
     const electron = require('electron');
 </script>
 <script src="../renderer/util/communicate.js"></script>
-
 <script src="../node_modules/layui-src/dist/layui.all.js"></script>
 <script>
     require('../renderer/module/laydate');
     require('../renderer/module/form');
     require('../renderer/module/layer');
-    const timeline = require('../renderer/module/timeline');
+</script>
+<script>
+    $(function () {
+        const timeline = $('#timeline-container');
+        const remindList = $('#remind-list');
+        timeline.height(document.documentElement.clientHeight - 145);
+        remindList.height(document.documentElement.clientHeight - 370);
+
+        window.onresize = function () {
+            timeline.height(document.documentElement.clientHeight - 145);
+            remindList.height(document.documentElement.clientHeight - 370);
+        };
+
+    });
 </script>
 </body>
 </html>

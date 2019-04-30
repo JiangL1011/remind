@@ -2,24 +2,12 @@
  author:  JiangL
  date:    2019年04月21日
  */
-
-$(function () {
-    const container = $('#timeline-container');
-    container.height(document.documentElement.clientHeight - 145);
-
-    window.onresize = function () {
-        const height = document.documentElement.clientHeight - 145;
-        container.height(height);
-    };
-
-});
+const badge = require('../util/badge');
 
 // 输入参数均为YYYYMMDD格式的日期
 module.exports = {
     load: function (start, end) {
         send('loadTimeline', [start, end], function (even, data) {
-            console.log(data);
-
             let html = '<ul class="layui-timeline">\n';
 
             for (let key in data) {
@@ -42,8 +30,8 @@ module.exports = {
                     html += '  <div class="layui-card-header">';
                     html += '    <h3 class="remind-title">' + time + '&nbsp;' + remind.title + '</h3>';
 
-                    html += priorityBadge(remind.priority);
-                    html += intervalBadge(remind.interval, remind.dayOfMonth);
+                    html += badge.priorityBadge(remind.priority);
+                    html += badge.intervalBadge(remind.interval, remind.dayOfMonth);
 
                     html += '  </div>\n';
                     html += '  <div class="layui-card-body">\n';
@@ -65,42 +53,4 @@ module.exports = {
 
         });
     }
-};
-
-const priorityBadge = function (priority) {
-    const colors = [
-        'layui-bg-green',
-        'layui-bg-blue',
-        'layui-bg-cyan',
-        'layui-bg-orange',
-        // 未定义颜色则默认红色
-        ''
-    ];
-    return '<span class="layui-badge ' + colors[priority - 1] + '">' + priority + '</span>';
-};
-
-const intervalBadge = function (interval, day) {
-    let text;
-    if (!interval) {
-        text = '当日';
-    } else if (interval === 'everyDay') {
-        text = '每日';
-    } else if (interval === 'everyWeek') {
-        text = '每周';
-        /*const week = ['日', '一', '二', '三', '四', '五', '六'];
-        if (typeof day === 'number') {
-            text = '每周' + week[day];
-        } else {
-            text = '每周';
-            for (let i = 0; i < day.length; i++) {
-                text += week[day[i]];
-                if (i + 1 !== day.length) {
-                    text += '、';
-                }
-            }
-        }*/
-    } else {
-        text = '每月' + day + '号';
-    }
-    return '<span class="layui-badge layui-bg-gray">' + text + '</span>';
 };

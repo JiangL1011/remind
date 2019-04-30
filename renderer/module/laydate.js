@@ -2,6 +2,8 @@
  author:  JiangL
  date:    2019年04月17日
  */
+const timeline = require('./timeline');
+const remindList = require('./remindList');
 
 $(function () {
 
@@ -14,16 +16,13 @@ $(function () {
             theme: '#1E9FFF',
             format: 'yyyy年MM月dd日',
             calendar: true,
-            /*mark: {
-                '2019-4-18': ''
-            },*/
-            change: function (value, date) {
-
-            },
             done: function (value, date) {
-
+                remindList.load(value);
             }
         });
+
+        // 页面加载就载入当天的remindList
+        remindList.load(window.moment().format('YYYYMMDD'));
 
         // 单次提醒日历
         layui.laydate.render({
@@ -59,11 +58,18 @@ $(function () {
             value: window.moment().format('YYYY年MM月DD日') + ' 至 ' +
                 window.moment().add(9, 'days').format('YYYY年MM月DD日'),
             done: function (value, start, end) {
-                const date = value.replace(/\D*/g, '');
-                timeline.load(date.substr(0, date.length / 2), date.substr(date.length / 2, date.length - 1))
+                timelineLoad(value);
             }
         });
+
+        // 页面加载完就展示时间线
+        timelineLoad($('#timeline-range').val());
 
     });
 
 });
+
+const timelineLoad = function (date) {
+    date = date.replace(/\D*/g, '');
+    timeline.load(date.substr(0, date.length / 2), date.substr(date.length / 2, date.length - 1));
+};

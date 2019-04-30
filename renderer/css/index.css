@@ -57,6 +57,10 @@ body {
     background-color: #f2f2f2;
 }
 
+.remind-item:hover {
+    background-color: #f2f2f2;
+}
+
 .remind-title {
     display: inline-block;
 }
@@ -65,4 +69,20 @@ body {
     top: -3px;
     left: 3px;
     margin-left: 3px;
+}
+
+#remind-list {
+    width: 98%;
+    margin: 20px auto;
+    overflow: auto;
+    padding-top: 4px;
+}
+
+#remind-list::-webkit-scrollbar {
+    width: 0;
+}
+
+.remind-item {
+    padding-top: 16px;
+    cursor: pointer;
 }
