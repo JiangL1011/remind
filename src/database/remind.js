@@ -6,6 +6,9 @@ const Nedb = require('nedb');
 const communicate = require('../util/communicate');
 const moment = require('moment');
 
+const todayJobs = [];
+let updateTodayJobs = false;
+
 const db = new Nedb({
     filename: 'data/remind.db',
     autoload: true
@@ -13,6 +16,11 @@ const db = new Nedb({
 
 communicate.receive('submit-new-remind', function (event, data) {
     for (let i = 0; i < data.length; i++) {
+        // 如果新增的任务是当天的，则修改参数，使报警定时器重新获取当天任务
+        const createDate = moment(data[i].createTime, 'YYYYMMDDHHmmss').format('YYYYMMDD');
+        if (createDate === moment().format('YYYYMMDD')) {
+            updateTodayJobs = true;
+        }
         db.insert(data[i], function (err, newDoc) {
             if (i === data.length - 1 || err) {
                 event.sender.send('submit-new-remind', !err);
@@ -79,6 +87,30 @@ communicate.receive('loadTimeline', function (event, data) {
     });
 });
 
+// 用于报警定时器获取当天的任务
+const findRemindsToday = function (callBack) {
+    if (todayJobs.length > 0 && !updateTodayJobs) {
+        callBack(todayJobs);
+    }
+
+    const today = parseInt(moment().format('YYYYMMDD'));
+    db.find({
+        $where: function () {
+            return findData(this, todayJobs, today, today);
+        }
+    }, function (err, docs) {
+        todayJobs.sort((a, b) => {
+            if (a.remindTime !== b.remindTime) {
+                return a.remindTime < b.remindTime ? -1 : 1;
+            } else {
+                return a.priority <= b.priority ? -1 : 1;
+            }
+        });
+        updateTodayJobs = false;
+        callBack(todayJobs);
+    });
+};
+
 const findData = function (candidateData, arr, start, end) {
     if (candidateData.type === 'once') {
         const deadDate = parseInt(candidateData.deadline.substring(0, 8));
@@ -138,4 +170,8 @@ const findData = function (candidateData, arr, start, end) {
         }
     }
     return false;
+};
+
+module.exports = {
+    jobsToday: findRemindsToday
 };
