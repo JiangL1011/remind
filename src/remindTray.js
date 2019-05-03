@@ -15,7 +15,8 @@ module.exports = {
                     for (const d of data) {
                         const remindTime = parseInt(d.deadline ? (moment(d.deadline, 'YYYYMMDDHHmmss').format('HHmmss')) : d.repeatTime);
                         // 提前15分钟预警
-                        if (remindTime - currTime <= 1500) {
+                        const fromNow = remindTime - currTime;
+                        if (fromNow <= 1500 && fromNow >= 0) {
                             tray.displayBalloon({
                                 title: '还有15分钟！！！',
                                 content: d.title + '\r\n' + d.content,

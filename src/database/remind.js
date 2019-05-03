@@ -91,24 +91,27 @@ communicate.receive('loadTimeline', function (event, data) {
 const findRemindsToday = function (callBack) {
     if (todayJobs.length > 0 && !updateTodayJobs) {
         callBack(todayJobs);
+    } else {
+        const today = parseInt(moment().format('YYYYMMDD'));
+        // 清空数组
+        todayJobs.length = 0;
+        db.find({
+            $where: function () {
+                return findData(this, todayJobs, today, today);
+            }
+        }, function (err, docs) {
+            todayJobs.sort((a, b) => {
+                if (a.remindTime !== b.remindTime) {
+                    return a.remindTime < b.remindTime ? -1 : 1;
+                } else {
+                    return a.priority <= b.priority ? -1 : 1;
+                }
+            });
+            updateTodayJobs = false;
+            callBack(todayJobs);
+        });
     }
 
-    const today = parseInt(moment().format('YYYYMMDD'));
-    db.find({
-        $where: function () {
-            return findData(this, todayJobs, today, today);
-        }
-    }, function (err, docs) {
-        todayJobs.sort((a, b) => {
-            if (a.remindTime !== b.remindTime) {
-                return a.remindTime < b.remindTime ? -1 : 1;
-            } else {
-                return a.priority <= b.priority ? -1 : 1;
-            }
-        });
-        updateTodayJobs = false;
-        callBack(todayJobs);
-    });
 };
 
 const findData = function (candidateData, arr, start, end) {
