@@ -4,6 +4,7 @@
  */
 const remind = require('./database/remind.js');
 const moment = require('moment');
+const detail = require('./database/detail');
 
 module.exports = {
     load: function (tray, env) {
@@ -14,15 +15,19 @@ module.exports = {
                 if (data.length > 0) {
                     for (const d of data) {
                         const remindTime = parseInt(d.deadline ? (moment(d.deadline, 'YYYYMMDDHHmmss').format('HHmmss')) : d.repeatTime);
-                        // 提前15分钟预警
-                        const fromNow = remindTime - currTime;
-                        if (fromNow <= 1500 && fromNow >= 0) {
-                            tray.displayBalloon({
-                                title: '还有15分钟！！！',
-                                content: d.title + '\r\n' + d.content,
-                                icon: env + 'static/img/lufi.jpg'
-                            });
-                        }
+                        detail.reminded(d._id, moment().format('YYYYMMDD'), function (reminded) {
+                            if (!reminded) {
+                                // 提前15分钟预警
+                                const fromNow = remindTime - currTime;
+                                if (fromNow <= 1500 && fromNow >= 0) {
+                                    tray.displayBalloon({
+                                        title: '还有15分钟！！！',
+                                        content: d.title + '\r\n' + d.content,
+                                        icon: env + 'static/img/lufi.jpg'
+                                    });
+                                }
+                            }
+                        });
                     }
                 }
             });
