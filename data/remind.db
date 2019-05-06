@@ -7,6 +7,7 @@
 {"content":"啊啊啊啊啊啊啊啊啊啊啊","createTime":"20190425225843","interval":"everyDay","priority":"3","repeatTime":"202020","title":"发发发发发","type":"repeat","_id":"MGfaAKpeQl77YAME"}
 {"content":"重复标题3的内容","createTime":"20190425104618","dayOfMonth":"4","interval":"everyMonth","priority":"2","repeatTime":"102222","title":"重复标题3","type":"repeat","_id":"Pwu6wGEbZCA5I9mL"}
 {"content":"啦啦啦","createTime":"20190502181326","deadline":"20190502183050","priority":"5","title":"测试报警","type":"once","_id":"RCmRCeaTLWULHr3k"}
+{"content":"啦啦啦","createTime":"20190506203406","interval":"everyDay","priority":"4","repeatTime":"210000","title":"哦哈哈哈","type":"repeat","_id":"T59oQ4RNHJ4qoEk5"}
 {"content":"重复标题1的内容","createTime":"20190425104422","dayOfWeek":"0","interval":"everyWeek","priority":"1","repeatTime":"051108","title":"重复标题1","type":"repeat","_id":"UJ5yxA5sou31bPEh"}
 {"content":"重复标题2的内容","createTime":"20190425104518","dayOfMonth":"24","interval":"everyMonth","priority":"5","repeatTime":"080202","title":"重复标题2","type":"repeat","_id":"Y2imrIKtfNOZZ3xC"}
 {"content":"fffffffff","createTime":"20190503144826","deadline":"20190503160000","priority":"2","title":"测试报警0503","type":"once","_id":"oiCx86Q0UqpbWeHJ"}

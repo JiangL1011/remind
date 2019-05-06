@@ -11,20 +11,22 @@ module.exports = {
 
         setInterval(function () {
             remind.jobsToday(function (data) {
-                const currTime = parseInt(moment().format('HHmmss'));
+                const nowTimestamp = moment().valueOf();
                 if (data.length > 0) {
                     for (const d of data) {
                         const remindTime = parseInt(d.deadline ? (moment(d.deadline, 'YYYYMMDDHHmmss').format('HHmmss')) : d.repeatTime);
                         detail.reminded(d._id, moment().format('YYYYMMDD'), function (reminded) {
                             if (!reminded) {
                                 // 提前15分钟预警
-                                const fromNow = remindTime - currTime;
-                                if (fromNow <= 1500 && fromNow >= 0) {
+                                const remindTimestamp = moment(remindTime, 'HHmmss').valueOf();
+                                const fromNow = remindTimestamp - nowTimestamp;
+                                if (fromNow <= 60 * 60 * 1000 && fromNow >= 0) {
                                     tray.displayBalloon({
-                                        title: '还有15分钟！！！',
+                                        title: '还有1小时！！！',
                                         content: d.title + '\r\n' + d.content,
                                         icon: env + 'static/img/lufi.jpg'
                                     });
+                                    detail.remind(d._id, moment().format('YYYYMMDD'));
                                 }
                             }
                         });
