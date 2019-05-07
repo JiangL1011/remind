@@ -4,7 +4,6 @@
  */
 
 const Nedb = require('nedb');
-const moment = require('moment');
 
 const db = new Nedb({
     filename: 'data/detail.db',

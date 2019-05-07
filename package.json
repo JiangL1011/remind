@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "jquery": "^3.4.0",
+    "jquery-contextmenu": "^3.0.0-beta.2",
     "layui-laydate": "^5.0.9",
     "layui-src": "^2.4.5",
     "moment": "^2.24.0",

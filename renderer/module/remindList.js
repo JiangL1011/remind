@@ -14,6 +14,7 @@ module.exports = {
                 const time = window.moment(data[i].remindTime, 'YYYYMMDDHHmmss').format('HH:mm:ss');
                 const title = data[i].title;
                 html += '<div class="remind-item">';
+                html += '<p class="remind-id" hidden>' + data[i]._id + '</p>';
                 html += (time + title);
                 html += badge.priorityBadge(data[i].priority);
                 html += badge.intervalBadge(data[i].interval, data[i].dayOfMonth);

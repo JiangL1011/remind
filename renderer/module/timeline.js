@@ -27,6 +27,7 @@ module.exports = {
                         time = window.moment(remind.remindTime.toString().substr(8, 13), 'HHmmss').format('HH:mm:ss');
                     }
                     html += '<div class="layui-card remind-card">\n';
+                    html += '<p class="remind-id" hidden>' + remind._id + '</p>';
                     html += '  <div class="layui-card-header">';
                     html += '    <h3 class="remind-title">' + time + '&nbsp;' + remind.title + '</h3>';
 
