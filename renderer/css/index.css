@@ -13,10 +13,6 @@ body {
     justify-content: center;
 }
 
-#remind-list {
-
-}
-
 .layui-btn {
     background-color: #1E9FFF;
 }
@@ -53,11 +49,7 @@ body {
     width: 260px;
 }
 
-.remind-card:hover {
-    background-color: #f2f2f2;
-}
-
-.remind-item:hover {
+.remind:hover {
     background-color: #f2f2f2;
 }
 

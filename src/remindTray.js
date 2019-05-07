@@ -6,6 +6,8 @@ const remind = require('./database/remind.js');
 const moment = require('moment');
 const detail = require('./database/detail');
 
+moment.locale('zh-cn');
+
 module.exports = {
     load: function (tray, env) {
 
@@ -22,7 +24,7 @@ module.exports = {
                                 const fromNow = remindTimestamp - nowTimestamp;
                                 if (fromNow <= 60 * 60 * 1000 && fromNow >= 0) {
                                     tray.displayBalloon({
-                                        title: '还有1小时！！！',
+                                        title: moment(remindTime, 'HHmmss').fromNow(true),
                                         content: d.title + '\r\n' + d.content,
                                         icon: env + 'static/img/lufi.jpg'
                                     });
