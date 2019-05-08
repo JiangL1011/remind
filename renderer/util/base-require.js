@@ -4,6 +4,5 @@
  */
 window.$ = window.jQuery = require('jquery');
 require('jquery-contextmenu');
-window.fs = require('fs');
 window.moment = require('moment');
 window.moment.locale('zh-cn');

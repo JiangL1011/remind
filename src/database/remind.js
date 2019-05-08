@@ -5,6 +5,7 @@
 const Nedb = require('nedb');
 const communicate = require('../util/communicate');
 const moment = require('moment');
+const detail = require('./detail');
 
 const todayJobs = [];
 let updateTodayJobs = false;
@@ -174,6 +175,29 @@ const findData = function (candidateData, arr, start, end) {
     }
     return false;
 };
+
+communicate.receive('delRemind', function (event, data) {
+    db.remove({_id: data}, {}, function (err1, num1) {
+        if (!err1) {
+            detail.delete(data, function (err2, num2) {
+                if (!err2) {
+                    event.sender.send('delRemind', true);
+                }
+            });
+        }
+    });
+});
+
+communicate.receive('delay', function (event, data) {
+    detail.delay(data.id, data.delay, function (result) {
+        event.sender.send('delay', result);
+    });
+});
+
+// 检查是否是延期过的任务
+communicate.receive('delayed', function (event, data) {
+
+});
 
 module.exports = {
     jobsToday: findRemindsToday

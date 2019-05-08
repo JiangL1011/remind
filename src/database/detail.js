@@ -4,6 +4,7 @@
  */
 
 const Nedb = require('nedb');
+const moment = require('moment');
 
 const db = new Nedb({
     filename: 'data/detail.db',
@@ -31,6 +32,32 @@ module.exports = {
             $set: {
                 reminded: true
             }
+        });
+    },
+    delete: function (id, callback) {
+        db.remove({id: id}, {}, function (err, numDeleted) {
+            callback(err, numDeleted);
+        });
+    },
+    // 推迟单位：分钟，并且只能推迟当天的任务
+    delay: function (id, delay, callback) {
+        const today = moment().format('YYYYMMDD');
+        db.update({id: id, remindDate: today}, {
+            $set: {
+                reminded: false,
+                delay: delay
+            }
+        }, {}, function (err, numReplaced) {
+            if (!err && numReplaced === 1) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        });
+    },
+    getDelayStatus: function (id, remindDate, callback) {
+        db.find({id: id, remindDate: remindDate}, function (err, docs) {
+            callback(docs[0].delay);
         });
     }
 };

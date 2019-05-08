@@ -15,7 +15,7 @@ module.exports = {
                 const title = data[i].title;
                 html += '<div class="remind-item remind">';
                 html += '<p class="remind-id" hidden>' + data[i]._id + '</p>';
-                html += (time + '&nbsp;' + title);
+                html += '<span class="remind-title">' + (time + '&nbsp;' + title) + '</span>';
                 html += badge.priorityBadge(data[i].priority);
                 html += badge.intervalBadge(data[i].interval, data[i].dayOfMonth);
                 html += '<hr class="layui-bg-gray">';

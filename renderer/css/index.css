@@ -78,3 +78,7 @@ body {
     padding-top: 16px;
     cursor: pointer;
 }
+
+.delayed {
+    color: red !important;
+}
