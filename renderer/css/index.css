@@ -81,4 +81,5 @@ body {
 
 .delayed {
     color: red !important;
+    font-weight: bolder !important;
 }

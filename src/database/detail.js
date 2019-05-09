@@ -5,10 +5,46 @@
 
 const Nedb = require('nedb');
 const moment = require('moment');
+const communicate = require('../util/communicate');
 
 const db = new Nedb({
     filename: 'data/detail.db',
     autoload: true
+});
+
+// 检查是否是延期过的任务
+communicate.receive('getRemindListDelay', function (event, data) {
+    db.find({
+        $where: function () {
+            const id = this.id;
+            const remindDate = parseInt(this.remindDate);
+            return data.id === id && parseInt(data.remindDate) === remindDate;
+        }
+    }, function (err, docs) {
+        if (docs && docs.length > 0) {
+            const delay = docs[0].delay;
+            event.sender.send('getRemindListDelay', delay);
+        } else {
+            event.sender.send('getRemindListDelay', false);
+        }
+    });
+});
+
+communicate.receive('getTimelineDelay', function (event, data) {
+    db.find({
+        $where: function () {
+            const id = this.id;
+            const remindDate = parseInt(this.remindDate);
+            return data.id === id && parseInt(data.remindDate) === remindDate;
+        }
+    }, function (err, docs) {
+        if (docs && docs[0] && docs[0].delay) {
+            const delay = docs[0].delay;
+            event.sender.send('getTimelineDelay', {delay: delay, index: data.index});
+        } else {
+            event.sender.send('getTimelineDelay', false);
+        }
+    });
 });
 
 module.exports = {
@@ -17,10 +53,10 @@ module.exports = {
         db.find({id: id, remindDate: remindDate}, function (err, docs) {
             if (!docs || docs.length === 0) {
                 db.insert({id: id, remindDate: remindDate, reminded: false});
-                callBack(false);
+                callBack({reminded: false, delay: docs[0].delay});
             } else {
                 const doc = docs[0];
-                callBack(doc.reminded);
+                callBack({reminded: doc.reminded, delay: docs[0].delay});
             }
         });
     },
@@ -53,11 +89,6 @@ module.exports = {
             } else {
                 callback(false);
             }
-        });
-    },
-    getDelayStatus: function (id, remindDate, callback) {
-        db.find({id: id, remindDate: remindDate}, function (err, docs) {
-            callback(docs[0].delay);
         });
     }
 };

@@ -194,11 +194,6 @@ communicate.receive('delay', function (event, data) {
     });
 });
 
-// 检查是否是延期过的任务
-communicate.receive('delayed', function (event, data) {
-
-});
-
 module.exports = {
     jobsToday: findRemindsToday
 };

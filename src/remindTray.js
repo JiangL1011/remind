@@ -17,11 +17,14 @@ module.exports = {
                 if (data.length > 0) {
                     for (const d of data) {
                         const remindTime = parseInt(d.deadline ? (moment(d.deadline, 'YYYYMMDDHHmmss').format('HHmmss')) : d.repeatTime);
-                        detail.reminded(d._id, moment().format('YYYYMMDD'), function (reminded) {
-                            if (!reminded) {
-                                // 提前15分钟预警
+                        detail.reminded(d._id, moment().format('YYYYMMDD'), function (backData) {
+                            if (!backData.reminded) {
+                                // 提前60分钟预警
                                 const remindTimestamp = moment(remindTime, 'HHmmss').valueOf();
-                                const fromNow = remindTimestamp - nowTimestamp;
+                                let fromNow = remindTimestamp - nowTimestamp;
+                                if (backData.delay) {
+                                    fromNow += (backData.delay * 60 * 1000);
+                                }
                                 if (fromNow <= 60 * 60 * 1000 && fromNow >= 0) {
                                     tray.displayBalloon({
                                         title: moment(remindTime, 'HHmmss').fromNow(true),
