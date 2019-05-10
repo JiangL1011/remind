@@ -2,10 +2,11 @@
  author:  JiangL
  date:    2019年04月21日
  */
+const remindDB = require('../dao/remind');
 
 $(function () {
     const remind = function () {
-        let title, type, deadline, priority, content, interval, repeatTime, dayOfWeek, dayOfMonth;
+        let title, type, deadline, priority, content, interval, repeatTime, dayOfWeek, dayOfMonth, detail;
         const createTime = window.moment().format('YYYYMMDDHHmmss');
         return {
             setTitle(title_) {
@@ -35,6 +36,9 @@ $(function () {
             setDayOfMonth(dayOfMonth_) {
                 dayOfMonth = dayOfMonth_
             },
+            setDetail(detail_) {
+                detail = detail_;
+            },
             getRemind() {
                 return {
                     title: title,
@@ -46,7 +50,8 @@ $(function () {
                     repeatTime: repeatTime,
                     dayOfWeek: dayOfWeek,
                     dayOfMonth: dayOfMonth,
-                    createTime: createTime
+                    createTime: createTime,
+                    detail: detail
                 }
             }
         }
@@ -82,6 +87,11 @@ $(function () {
             // 调整form结构
             const arr = [];
             const r = new remind();
+            if (form.type === 'once') {
+                r.setDetail({});
+            } else {
+                r.setDetail([]);
+            }
             if (form.deadline) {
                 r.setDeadline(window.moment(form.deadline, 'YYYY-MM-DD HH:mm:ss').format('YYYYMMDDHHmmss'));
             } else {
@@ -107,8 +117,8 @@ $(function () {
                 arr.push(r.getRemind());
             }
 
-            send('submit-new-remind', arr, function (e, d) {
-                if (d) {
+            remindDB.add(arr, function (result) {
+                if (result) {
                     layer.alert('新增提醒成功！', function () {
                         location.reload();
                     });

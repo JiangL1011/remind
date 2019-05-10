@@ -15,21 +15,6 @@ const db = new Nedb({
     autoload: true
 });
 
-communicate.receive('submit-new-remind', function (event, data) {
-    for (let i = 0; i < data.length; i++) {
-        // 如果新增的任务是当天的，则修改参数，使报警定时器重新获取当天任务
-        const createDate = moment(data[i].createTime, 'YYYYMMDDHHmmss').format('YYYYMMDD');
-        if (createDate === moment().format('YYYYMMDD')) {
-            updateTodayJobs = true;
-        }
-        db.insert(data[i], function (err, newDoc) {
-            if (i === data.length - 1 || err) {
-                event.sender.send('submit-new-remind', !err);
-            }
-        });
-    }
-});
-
 communicate.receive('getRemindsByDay', function (event, data) {
     // 接收到的参数均为YYYYMMDD格式的日期
     // 这里参数是一天的时间，因此开始和结束日期是一样的
@@ -54,39 +39,6 @@ communicate.receive('getRemindsByDay', function (event, data) {
     });
 });
 
-communicate.receive('loadTimeline', function (event, data) {
-    // 接收到的参数均为YYYYMMDD格式的日期
-    const start = parseInt(data[0]);
-    const end = parseInt(data[1]);
-
-    // 记录所有选定范围内的任务
-    const arr = [];
-    db.find({
-        $where: function () {
-            return findData(this, arr, start, end);
-        }
-    }, function (err, docs) {
-        arr.sort((a, b) => {
-            if (a.remindTime !== b.remindTime) {
-                return a.remindTime < b.remindTime ? -1 : 1;
-            } else {
-                return a.priority <= b.priority ? -1 : 1;
-            }
-        });
-
-        // 把所有提醒任务按照提醒时间分类
-        const result = {};
-        for (const d of arr) {
-            const date = moment(d.remindTime, 'YYYYMMDDHHmmss').format('YYYYMMDD');
-            if (!result[date]) {
-                result[date] = [];
-            }
-            result[date].push(d);
-        }
-
-        event.sender.send('loadTimeline', result);
-    });
-});
 
 // 用于报警定时器获取当天的任务
 const findRemindsToday = function (callBack) {

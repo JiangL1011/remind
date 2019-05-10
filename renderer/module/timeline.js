@@ -3,12 +3,13 @@
  date:    2019年04月21日
  */
 const badge = require('../util/badge');
+const remindDB = require('../dao/remind');
 
 let pTags;
 // 输入参数均为YYYYMMDD格式的日期
 module.exports = {
     load: function (start, end) {
-        send('loadTimeline', [start, end], function (even, data) {
+        remindDB.getByRangeDate(start, end, function (data) {
             let html = '<ul class="layui-timeline">\n';
 
             for (let key in data) {
