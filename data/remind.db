@@ -1,7 +1,8 @@
 {"title":"ddddd","type":"once","deadline":"20190510220400","priority":"3","content":"fdaewgrewgfdfsgfgsfgdfs","createTime":"20190510172600","detail":{},"_id":"3QTRWMOy01bzd27i"}
-{"content":"vxvxcxbhhgjtyegfw","createTime":"20190510000001","dayOfWeek":"1","detail":[],"interval":"everyWeek","priority":"4","repeatTime":"200000","title":"bbbbbb","type":"repeat","_id":"C7isJpP9ZR61zx6J"}
+{"title":"测试每天1","type":"repeat","priority":"4","content":"加分的考生怕vi店铺啊平凡的","interval":"everyDay","repeatTime":"150000","createTime":"20190512220754","detail":{"20190512":{"delay":"5"}},"_id":"6pFknKtMBNgjYHtw","remindTime":20190521150000}
 {"title":"eeeeee","type":"once","deadline":"20190510190000","priority":"5","content":"fdsavavewagga","createTime":"20190510173252","detail":{},"_id":"OIBEDtV7574n9XHg"}
 {"content":"fdsacaeefsfdasgqdsa","createTime":"20190510000000","deadline":"20190510230000","detail":{},"priority":"2","title":"aaaa","type":"once","_id":"R1yNNCaAMobybbhw"}
-{"content":"vxvxcxbhhgjtyegfw","createTime":"20190510000001","dayOfWeek":"3","detail":[],"interval":"everyWeek","priority":"4","repeatTime":"200000","title":"bbbbbb","type":"repeat","_id":"poavJyCQIcvZv7be"}
+{"title":"20190512测试1","type":"once","deadline":"20190512233300","priority":"2","content":"鸡扒女i哦怕减肥按","createTime":"20190512205429","detail":{"20190512":{"delay":"15"}},"_id":"TpRY2NkDpCBh86lk","remindTime":20190512233300}
+{"title":"20190512测试2","type":"once","deadline":"20190512235000","priority":"5","content":"即佛庞大vi哦怕打几份庞大","createTime":"20190512214127","detail":{"20190512":{"delay":"0"}},"_id":"oa2AoWjFIzFIlJGF","remindTime":20190512235000}
 {"title":"ccccccccc","type":"once","deadline":"20190510220000","priority":"2","content":"rerewqreqrewrwqerwe","createTime":"20190510172103","detail":{},"_id":"qKD9E8Zy7HQqhOhR"}
-{"content":"vxvxcxbhhgjtyegfw","createTime":"20190510000001","dayOfWeek":"5","detail":[],"interval":"everyWeek","priority":"4","repeatTime":"200000","title":"bbbbbb","type":"repeat","_id":"s0IQLadOAdiaJRdI"}
+{"content":"vxvxcxbhhgjtyegfw","createTime":"20190510000001","dayOfWeek":"5","detail":{},"interval":"everyWeek","priority":"4","repeatTime":"200000","title":"bbbbbb","type":"repeat","_id":"s0IQLadOAdiaJRdI"}

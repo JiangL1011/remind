@@ -14,6 +14,11 @@ module.exports = {
             callback(!err);
         });
     },
+    getById: function (id, callback) {
+        db.findOne({_id: id}, function (err, doc) {
+            callback(doc);
+        });
+    },
     getByRangeDate: function (start, end, callback) {
         // 记录所有选定范围内的任务
         const arr = [];
@@ -41,6 +46,18 @@ module.exports = {
             }
 
             callback(result);
+        });
+    },
+    deleteById: function (id, callback) {
+        db.remove({_id: id}, function (err) {
+            if (!err) {
+                callback(true);
+            }
+        });
+    },
+    update: function (where, set, type, callback) {
+        db.update(where, {['$' + type]: set}, function (err) {
+            callback(!err);
         });
     }
 };

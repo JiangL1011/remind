@@ -31,8 +31,14 @@ module.exports = {
                     html += '<div class="layui-card remind-card remind">\n';
                     html += '<p class="remind-id" hidden>' + remind._id + '</p>';
                     html += '  <div class="layui-card-header">';
-                    html += '    <h3 class="remind-title"><span>' + time + '</span>&nbsp;<span>' + remind.title +
-                        '</span></h3>';
+                    if (remind.detail[key] && remind.detail[key].delay && remind.detail[key].delay !== '0') {
+                        time = window.moment(time, 'HH:mm:ss').add('minutes', remind.detail[key].delay).format('HH:mm:ss');
+                        html += '<h3 class="remind-title delayed"><span>' + time
+                            + '</span>&nbsp;<span>' + remind.title + '</span></h3>';
+                    } else {
+                        html += '<h3 class="remind-title"><span>' + time + '</span>&nbsp;<span>' + remind.title +
+                            '</span></h3>';
+                    }
 
                     html += badge.priorityBadge(remind.priority);
                     html += badge.intervalBadge(remind.interval, remind.dayOfMonth);
@@ -54,21 +60,6 @@ module.exports = {
             html += '   </ul>';
 
             $('#timeline-container').html(html);
-
-            pTags = $('.remind-card').find('.remind-id');
-            for (let i = 0; i < pTags.length; i++) {
-                const id = $(pTags[i]).text();
-                const remindDate = $(pTags[i]).parent().prev().text().replace(/\D*/g, '');
-                send('getTimelineDelay', {id: id, remindDate: remindDate, index: i}, function (event, data) {
-                    if (data) {
-                        const h3 = $(pTags[data.index]).next().children().get(0);
-                        $(h3).addClass('delayed');
-                        const time = $(h3).children().get(0).innerText;
-                        $(h3).children().get(0).innerText = window.moment(time, 'HH:mm:ss')
-                            .add("minutes", data.delay).format('HH:mm:ss');
-                    }
-                });
-            }
         });
     }
 };

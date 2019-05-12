@@ -18,7 +18,7 @@ module.exports = {
             '略低',
             '一般',
             '很高',
-            '贼鸡儿高'
+            '贼高'
         ];
         return '<span class="layui-badge ' + colors[priority - 1] + '">' + title[priority - 1] + '</span>';
     },

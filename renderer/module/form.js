@@ -87,11 +87,7 @@ $(function () {
             // 调整form结构
             const arr = [];
             const r = new remind();
-            if (form.type === 'once') {
-                r.setDetail({});
-            } else {
-                r.setDetail([]);
-            }
+            r.setDetail({});
             if (form.deadline) {
                 r.setDeadline(window.moment(form.deadline, 'YYYY-MM-DD HH:mm:ss').format('YYYYMMDDHHmmss'));
             } else {

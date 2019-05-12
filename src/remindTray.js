@@ -2,16 +2,18 @@
  author  蒋领
  date    2019年04月30日
  */
-const remind = require('./database/remind.js');
 const moment = require('moment');
-const detail = require('./database/detail');
+const communicate = require('./util/communicate');
 
 moment.locale('zh-cn');
 
 module.exports = {
     load: function (tray, env) {
+        communicate.receive('doRemind', function (event, data) {
+            console.log(data);
+        });
 
-        setInterval(function () {
+        /*setInterval(function () {
             remind.jobsToday(function (data) {
                 const nowTimestamp = moment().valueOf();
                 if (data.length > 0) {
@@ -39,6 +41,6 @@ module.exports = {
                 }
             });
 
-        }, 1000);
+        }, 1000);*/
     }
 };
