@@ -19,6 +19,7 @@ module.exports = {
             callback(doc);
         });
     },
+    // start end均为YYYYMMDD
     getByRangeDate: function (start, end, callback) {
         // 记录所有选定范围内的任务
         const arr = [];

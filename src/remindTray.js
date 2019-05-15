@@ -10,7 +10,11 @@ moment.locale('zh-cn');
 module.exports = {
     load: function (tray, env) {
         communicate.receive('doRemind', function (event, data) {
-            console.log(data);
+            tray.displayBalloon({
+                title: moment(data[2]).fromNow(true),
+                content: data[0] + '\r\n' + data[1],
+                icon: env + 'static/img/lufi.jpg'
+            });
         });
 
         /*setInterval(function () {
