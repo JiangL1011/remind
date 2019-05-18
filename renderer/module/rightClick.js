@@ -9,6 +9,37 @@ $(function () {
         $.contextMenu({
             selector: ".remind",
             items: {
+                "complete": {
+                    name: "完成", icon: "add", callback: function (key, opt) {
+                        const that = this;
+                        const id = $(that).find('p.remind-id').text();
+                        const selectedDay = $(that).parent().find('.layui-timeline-title').text().replace(/\D*/g, '');
+                        const today = window.moment().format('YYYYMMDD');
+                        if (selectedDay !== today) {
+                            layer.alert('只能完成今天的任务');
+                            return;
+                        }
+
+                        remindDB.getById(id, function (data) {
+                            const todayDetail = data.detail[today];
+                            if (todayDetail && todayDetail.finished) {
+                                layer.alert('不能完成已经完成的任务');
+                            } else {
+                                const where = {_id: id};
+                                const set = {['detail.' + today + '.finished']: window.moment().format('HHmmss')};
+                                const type = 'set';
+                                remindDB.update(where, set, type, function (backData) {
+                                    if (backData) {
+                                        alert(123);
+                                    }
+                                });
+                            }
+                        });
+
+
+                    }
+                },
+                "sep1": "---------",
                 "delay": {
                     name: "推迟", icon: "edit", callback: function (key, opt) {
                         const that = this;
