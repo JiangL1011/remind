@@ -35,7 +35,7 @@ function createWindow() {
             e.preventDefault();
             mainWindow.hide();
             tray.displayBalloon({
-                title: '贼鸡儿好用的软件',
+                title: '打败ToDo指日可待',
                 content: '程序已最小化到系统托盘！',
                 icon: env + 'static/img/lufi.jpg'
             });
@@ -54,7 +54,7 @@ function createWindow() {
             }
         }
     ]);
-    tray.setToolTip('贼鸡儿好用的软件');
+    tray.setToolTip('打败ToDo指日可待');
     tray.setContextMenu(contextMenu);
     tray.on('double-click', function () {
         mainWindow.show();

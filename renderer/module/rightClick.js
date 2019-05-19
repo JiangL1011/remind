@@ -12,8 +12,9 @@ $(function () {
                 "complete": {
                     name: "完成", icon: "add", callback: function (key, opt) {
                         const that = this;
-                        const id = $(that).find('p.remind-id').text();
-                        const selectedDay = $(that).parent().find('.layui-timeline-title').text().replace(/\D*/g, '');
+                        const idAndDate = $(that).find('p.remind-id').text().split(':');
+                        const id = idAndDate[0];
+                        const selectedDay = idAndDate[1];
                         const today = window.moment().format('YYYYMMDD');
                         if (selectedDay !== today) {
                             layer.alert('只能完成今天的任务');
@@ -30,7 +31,9 @@ $(function () {
                                 const type = 'set';
                                 remindDB.update(where, set, type, function (backData) {
                                     if (backData) {
-                                        alert(123);
+                                        layer.alert('任务已完成', function () {
+                                            location.reload();
+                                        });
                                     }
                                 });
                             }
@@ -43,8 +46,9 @@ $(function () {
                 "delay": {
                     name: "推迟", icon: "edit", callback: function (key, opt) {
                         const that = this;
-                        const id = $(that).find('p.remind-id').text();
-                        const selectedDay = $(that).parent().find('.layui-timeline-title').text().replace(/\D*/g, '');
+                        const idAndDate = $(that).find('p.remind-id').text().split(':');
+                        const id = idAndDate[0];
+                        const selectedDay = idAndDate[1];
                         const today = window.moment().format('YYYYMMDD');
                         if (selectedDay !== today) {
                             layer.alert('只能推迟今天的任务');
@@ -59,25 +63,28 @@ $(function () {
                             const reg = /^\d{1,3}$/;
                             if (reg.test(value)) {
                                 remindDB.getById(id, function (doc) {
-                                    console.log(doc);
                                     const where = {_id: id};
-                                    const key = 'detail.' + today + '.delay';
-                                    const set = {[key]: value};
+                                    const key = 'detail.' + today;
+                                    const set = {[key + '.delay']: value, [key + '.reminded']: false};
                                     remindDB.update(where, set, 'set', function (data) {
                                         if (data) {
-                                            location.reload();
+                                            layer.alert('推迟成功', function () {
+                                                location.reload();
+                                            });
                                         }
                                     });
                                 });
                             } else {
-                                alert('只能输入数字');
+                                layer.alert('只能输入数字');
                             }
                         });
                     }
                 },
                 "delete": {
                     name: "删除", icon: "delete", callback: function (key, opt) {
-                        const id = $(this).find('p.remind-id').text();
+                        const that = this;
+                        const idAndDate = $(that).find('p.remind-id').text().split(':');
+                        const id = idAndDate[0];
                         remindDB.deleteById(id, function (data) {
                             if (data) {
                                 location.reload();

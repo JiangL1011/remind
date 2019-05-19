@@ -83,3 +83,7 @@ body {
     color: red !important;
     font-weight: bolder !important;
 }
+
+.finished {
+    text-decoration-line: line-through;
+}

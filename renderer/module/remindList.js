@@ -20,16 +20,19 @@ module.exports = {
             for (let i = 0; i < data.length; i++) {
                 const time = window.moment(data[i].remindTime, 'YYYYMMDDHHmmss').format('HH:mm:ss');
                 const title = data[i].title;
+                const todayTask = data[i].detail[remindDate];
+                const finished = (todayTask && todayTask.finished) ? 'finished' : '';
                 html += '<div class="remind-item remind">';
-                html += '<p class="remind-id" hidden>' + data[i]._id + '</p>';
-                if (data[i].detail[remindDate]
-                    && data[i].detail[remindDate].delay
-                    && data[i].detail[remindDate].delay !== '0') {
-                    const time_ = window.moment(time, 'HH:mm:ss').add('minutes', data[i].detail[remindDate].delay).format('HH:mm:ss');
-                    html += '<span class="remind-title delayed"><span>' + time_
+                // 隐藏p标签内用：分隔任务_id和YYYYMMDD日期
+                html += '<p class="remind-id" hidden>' + data[i]._id + ':' + remindDate + '</p>';
+                if (todayTask
+                    && todayTask.delay
+                    && todayTask.delay !== '0') {
+                    const time_ = window.moment(time, 'HH:mm:ss').add('minutes', todayTask.delay).format('HH:mm:ss');
+                    html += '<span class="remind-title delayed ' + finished + '"><span>' + time_
                         + '</span>&nbsp;<span>' + title + '</span></span>';
                 } else {
-                    html += '<span class="remind-title"><span>' + time
+                    html += '<span class="remind-title ' + finished + '"><span>' + time
                         + '</span>&nbsp;<span>' + title + '</span></span>';
                 }
                 html += badge.priorityBadge(data[i].priority);
