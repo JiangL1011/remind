@@ -13,7 +13,7 @@ $(function () {
             if (reminds) {
                 for (const remind of reminds) {
                     const detail = remind.detail[today];
-                    if (!detail || !detail.reminded || !detail.finished) {
+                    if (!detail || !(detail.reminded || detail.finished)) {
                         let remindTimestamp = window.moment(remind.remindTime, 'YYYYMMDDHHmmss').valueOf();
                         if (detail && detail.delay) {
                             remindTimestamp += (detail.delay * 60000);
